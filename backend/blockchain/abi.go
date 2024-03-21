@@ -79,14 +79,15 @@ func OwnerOf(
 ) int64 {
 
 	for i := int64(0); i < 6; i++ {
-		inputz, _ := GeneralAbi.Pack("OwnerOf", big.NewInt(i))
+		inputz, _ := GeneralAbi.Pack("ownerOf", big.NewInt(i))
 		msgz := ethereum.CallMsg{
 			To:   &contract,
 			Data: inputz,
 		}
-		ownerb, _ := client.CallContract(context.Background(), msgz, nil)
+		ownerb, err := client.CallContract(context.Background(), msgz, nil)
 		owner := common.BytesToAddress(ownerb)
 
+		fmt.Println(owner, address, err)
 		if owner == address {
 			return i
 		}
