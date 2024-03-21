@@ -1,8 +1,10 @@
 #!/bin/bash
 
 # Start your services
-service ebb_ricardBorneServ start
-service ebb_ricardgoBack start
+systemctl enable ebb_ricardBorneServ 
+systemctl enable ebb_ricardgoBack 
+systemctl start ebb_ricardBorneServ 
+systemctl start ebb_ricardgoBack 
 
 # Restart Apache
 service apache2 restart
