@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
@@ -41,9 +40,9 @@ func verifyfrom(client *ethclient.Client) http.HandlerFunc {
 }
 func main() {
 
-	//LIKE GATE BUT WITHOUT SIGNATURE
+	// CHANGE THE POLYGON RPC IF NEEDED
 
-	ipc := os.Args[1]
+	ipc := "https://polygon.rpc.blxrbdn.com"
 
 	c, cerr := ethclient.Dial(ipc)
 	if cerr != nil {

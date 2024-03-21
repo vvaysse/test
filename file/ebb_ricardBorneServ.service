@@ -1,0 +1,14 @@
+[Unit]
+Description=ricardborneServ
+After=network-online.target
+ 
+[Service]
+ExecStart=php /home/servers/ricardBorneServ/server.php
+WorkingDirectory=/home/servers/ricardBorneServ/
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=root
+ 
+[Install]
+WantedBy=multi-user.target
