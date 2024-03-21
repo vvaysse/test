@@ -26,15 +26,17 @@ func verifyfrom(client *ethclient.Client) http.HandlerFunc {
 		res, err := blockchain.AbiParser(client, CaToVeferify, "balanceOf", emptyargs, blockchain.BalanceOfAbi)
 		if err == nil {
 			if len(res) > 0 && res != "0|" {
+
+				tokenid := blockchain.OwnerOf(client, CaToVeferify, addressWhoSigned)
 				fmt.Println(res, network)
 
-				httpOut.TextResp(w, "True")
+				httpOut.TextResp(w, fmt.Sprintf("True|%d", tokenid))
 				//fmt.Println("TRUE")
 				return
 			}
 		}
 
-		httpOut.TextResp(w, "False")
+		httpOut.TextResp(w, "False|99")
 	}
 
 }

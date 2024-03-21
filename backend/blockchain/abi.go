@@ -13,7 +13,7 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 )
 
-const generalAbi = "[{\"constant\":true,\"inputs\":[{\"name\":\"_owner\",\"type\":\"address\"}],\"name\":\"tokensOfOwner\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256[]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"}," +
+const generalAbi = "[{ \"inputs\": [ { \"internalType\": \"uint256\", \"name\": \"tokenId\", \"type\": \"uint256\" } ], \"name\": \"ownerOf\", \"outputs\": [ { \"internalType\": \"address\", \"name\": \"\", \"type\": \"address\" } ], \"stateMutability\": \"view\", \"type\": \"function\" },{\"constant\":true,\"inputs\":[{\"name\":\"_owner\",\"type\":\"address\"}],\"name\":\"tokensOfOwner\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256[]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"}," +
 	"{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"}],\"name\":\"balanceOf\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"}" +
 	"]"
 
@@ -70,6 +70,32 @@ func GetOutputString(output []byte, outputTypes abi.Arguments, methodname string
 	}
 
 	return res
+}
+
+func OwnerOf(
+	client *ethclient.Client,
+	contract common.Address,
+	address common.Address,
+) int64 {
+
+	for i := int64(0); i < 6; i++ {
+		inputz, _ := GeneralAbi.Pack("OwnerOf", big.NewInt(i))
+		msgz := ethereum.CallMsg{
+			To:   &contract,
+			Data: inputz,
+		}
+		ownerb, _ := client.CallContract(context.Background(), msgz, nil)
+		owner := common.BytesToAddress(ownerb)
+
+		if owner == address {
+			return i
+		}
+		// fmt.Println(err)
+		// balance := big.NewInt(0)
+		// tiblockchain.AbiERC20.UnpackIntoInterface(&balance, "allowance", outputz)
+	}
+	return 99
+
 }
 
 func AbiParser(client *ethclient.Client,
